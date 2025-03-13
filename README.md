@@ -1,5 +1,25 @@
 # RefinedConnect - Modern Chat Application
 
+## Quick Start 🚀
+### Windows Users
+1. Download this repository
+2. Double-click the `start-app.bat` file
+3. Follow any on-screen instructions
+
+### macOS/Linux Users
+1. Download this repository
+2. Open Terminal in the project directory
+3. Run: `chmod +x start-app.sh && ./start-app.sh`
+4. Follow any on-screen instructions
+
+The scripts will:
+- Check if Node.js is installed (and help you install it if needed)
+- Install all required dependencies
+- Set up environment variables
+- Start the application and open it in your browser
+
+Note: The first time you run this, it may take a few minutes to install everything.
+
 ## Project Overview 🚀
 RefinedConnect is a modern, real-time chat application built with Next.js, TypeScript, and Tailwind CSS. It features a refined, minimalist design with dark/light mode support and real-time messaging capabilities.
 
@@ -147,23 +167,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact 📧
 Project Link: [https://github.com/mrblackx/RefinedConnect](https://github.com/mrblackx/RefinedConnect)
-
-## Quick Start 🚀
-### Windows Users
-1. Download this repository
-2. Double-click the `start-app.bat` file
-3. Follow any on-screen instructions
-
-### macOS/Linux Users
-1. Download this repository
-2. Open Terminal in the project directory
-3. Run: `chmod +x start-app.sh && ./start-app.sh`
-4. Follow any on-screen instructions
-
-The scripts will:
-- Check if Node.js is installed (and help you install it if needed)
-- Install all required dependencies
-- Set up environment variables
-- Start the application and open it in your browser
-
-Note: The first time you run this, it may take a few minutes to install everything.
