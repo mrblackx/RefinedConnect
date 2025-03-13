@@ -49,16 +49,16 @@ export default function UserProfile({
   if (collapsed) {
     return (
       <div className={`py-4 flex justify-center border-b ${
-        darkMode ? 'border-[#333333] bg-[#111111]' 
-        : 'border-[#e0e0e0] bg-white'
+        darkMode ? 'border-[#2E3944] bg-[#1D252B]' 
+        : 'border-[#748D92]/20 bg-[#E8EDE6]'
       }`}>
         <div 
           className={`flex items-center justify-center w-12 h-12 rounded-full font-light text-xs border ${
-            darkMode ? 'border-[#333333] bg-[#222222] text-white' : 'border-[#e0e0e0] bg-[#f5f5f5] text-black'
+            'border-[#2E3944] bg-[#191F24] text-[#D3D9D4]'
           }`}
           title={username || 'Anonymous User'}
         >
-          {username ? initials : <User className="w-5 h-5" />}
+          {username ? initials : <User className="w-5 h-5 text-[#D3D9D4]" />}
         </div>
       </div>
     );
@@ -66,16 +66,16 @@ export default function UserProfile({
 
   return (
     <div className={`p-4 border-b ${darkMode 
-      ? 'border-[#333333] bg-[#111111]' 
-      : 'border-[#e0e0e0] bg-white'}`}>
+      ? 'border-[#2E3944] bg-[#1D252B]' 
+      : 'border-[#748D92]/20 bg-[#E8EDE6]'}`}>
       <div className="flex items-center">
         {/* User avatar */}
         <div 
-          className={`flex items-center justify-center w-12 h-12 rounded-full mr-3 text-xs font-light border ${
-            darkMode ? 'border-[#333333] bg-[#222222] text-white' : 'border-[#e0e0e0] bg-[#f5f5f5] text-black'
+          className={`flex items-center justify-center w-12 h-12 rounded-full mr-3 text-xs font-light border transition-colors duration-200 ${
+            'border-[#2E3944] bg-[#191F24] text-[#D3D9D4]'
           }`}
         >
-          {username ? initials : <User className="w-5 h-5" />}
+          {username ? initials : <User className="w-5 h-5 text-[#D3D9D4]" />}
         </div>
         
         {/* Username display or edit */}
@@ -88,43 +88,47 @@ export default function UserProfile({
                 onChange={(e) => setNewUsername(e.target.value)}
                 placeholder="Enter your username"
                 autoFocus
-                className={`flex-1 border py-2 px-3 text-sm focus:outline-none font-light rounded-l-2xl ${
+                className={`flex-1 py-1 px-2 text-sm font-light border rounded-lg ${
                   darkMode 
-                    ? 'border-[#333333] bg-[#222222] text-white placeholder-[#767676]' 
-                    : 'border-[#e0e0e0] bg-white text-black placeholder-[#a0a0a0]'
+                    ? 'border-[#2E3944] bg-[#212A31] text-[#D3D9D4] placeholder-[#748D92]' 
+                    : 'border-[#748D92]/20 bg-[#F0F2EF] text-[#212A31] placeholder-[#748D92]'
                 }`}
-                maxLength={30}
               />
-              <button
-                type="submit"
-                className={`${
-                  darkMode ? 'bg-white text-[#111111]' : 'bg-black text-white'
-                } py-2 px-3 text-sm transition-colors duration-200 font-light hover:opacity-90`}
+            </div>
+            <div className="flex space-x-1">
+              <button 
+                type="submit" 
+                className={`py-1 px-2 text-xs transition-colors duration-200 rounded-lg ${
+                  darkMode 
+                    ? 'bg-[#124E66] text-[#D3D9D4] hover:bg-[#0E4258]' 
+                    : 'bg-[#124E66] text-[#D3D9D4] hover:bg-[#0E4258]'
+                }`}
               >
-                <CheckIcon className="w-4 h-4" />
+                Save
               </button>
-              <button
-                type="button"
-                onClick={handleCancel}
-                className={`${
-                  darkMode ? 'bg-[#333333] text-white' : 'bg-[#e0e0e0] text-black'
-                } py-2 px-3 text-sm transition-colors duration-200 font-light rounded-r-2xl hover:opacity-90`}
+              <button 
+                type="button" 
+                onClick={handleCancel} 
+                className={`py-1 px-2 text-xs transition-colors duration-200 rounded-lg ${
+                  darkMode 
+                    ? 'bg-[#2E3944]/70 text-[#9EB8BE] hover:bg-[#2E3944]' 
+                    : 'bg-[#748D92]/10 text-[#546E73] hover:bg-[#748D92]/20'
+                }`}
               >
-                <XIcon className="w-4 h-4" />
+                Cancel
               </button>
             </div>
-            <p className={`text-xs ${darkMode ? 'text-[#a0a0a0]' : 'text-[#767676]'} font-light`}>Press Enter to save</p>
           </form>
         ) : (
           <div className="flex items-center flex-1">
             <div className="flex-1">
-              <p className={`font-light ${darkMode ? 'text-white' : 'text-black'}`}>{username || 'Anonymous User'}</p>
-              <p className={`text-xs ${darkMode ? 'text-[#a0a0a0]' : 'text-[#767676]'} font-light`}>ID: {userId.substring(0, 8)}...</p>
+              <p className={`font-light ${darkMode ? 'text-[#D3D9D4]' : 'text-[#212A31]'}`}>{username || 'Anonymous User'}</p>
+              <p className={`text-xs ${darkMode ? 'text-[#9EB8BE]' : 'text-[#546E73]'} font-light`}>ID: {userId.substring(0, 8)}...</p>
             </div>
             <button
               onClick={() => setIsEditing(true)}
               className={`p-1.5 rounded-full focus:outline-none transition-all duration-200 hover:scale-105 ${
-                darkMode ? 'hover:bg-[#222222] text-[#a0a0a0]' : 'hover:bg-[#f5f5f5] text-[#767676]'
+                darkMode ? 'hover:bg-[#2E3944] text-[#9EB8BE]' : 'hover:bg-[#748D92]/10 text-[#546E73]'
               }`}
               aria-label="Edit username"
             >

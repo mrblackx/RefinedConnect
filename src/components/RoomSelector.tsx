@@ -74,13 +74,15 @@ export default function RoomSelector({
     <div className="p-4 flex-1 overflow-auto">
       {!collapsed && (
         <div className="flex justify-between items-center mb-3">
-          <h2 className={`text-lg font-light tracking-tight ${darkMode ? 'text-white' : 'text-black'}`}>Rooms</h2>
+          <h2 className={`text-lg font-light tracking-tight ${darkMode ? 'text-[#D3D9D4]' : 'text-[#212A31]'}`}>Rooms</h2>
           <button
             onClick={() => setIsAddingRoom(true)}
-            className={`p-1.5 rounded-full focus:outline-none transition-colors duration-200 hover:scale-105 ${
-              darkMode ? 'hover:bg-[#222222] text-[#a0a0a0]' : 'hover:bg-[#f5f5f5] text-[#767676]'
-            }`}
-            aria-label="Add room"
+            className={`flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-200 ${
+              darkMode 
+                ? 'bg-[#124E66] text-[#D3D9D4] hover:bg-[#124E66]/90' 
+                : 'bg-[#124E66] text-[#D3D9D4] hover:bg-[#124E66]/90'
+            } shadow-sm hover:scale-105`}
+            aria-label="Add new room"
           >
             <PlusIcon className="w-5 h-5" />
           </button>
@@ -99,8 +101,8 @@ export default function RoomSelector({
               autoFocus
               className={`flex-1 border py-2 px-3 text-sm focus:outline-none font-light rounded-l-2xl ${
                 darkMode 
-                  ? 'border-[#333333] bg-[#222222] text-white placeholder-[#767676]' 
-                  : 'border-[#e0e0e0] bg-white text-black placeholder-[#a0a0a0]'
+                  ? 'border-[#2E3944] bg-[#2E3944] text-[#D3D9D4] placeholder-[#748D92]' 
+                  : 'border-[#748D92]/30 bg-[#748D92]/10 text-[#212A31] placeholder-[#748D92]'
               }`}
             />
             <button
@@ -108,20 +110,20 @@ export default function RoomSelector({
               disabled={!newRoomName.trim()}
               className={`${
                 darkMode 
-                  ? 'bg-white text-[#111111]' 
-                  : 'bg-black text-white'
+                  ? 'bg-[#124E66] text-[#D3D9D4]' 
+                  : 'bg-[#124E66] text-[#D3D9D4]'
               } py-2 px-4 text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 ease-in-out rounded-r-2xl font-light hover:opacity-90`}
             >
               Create
             </button>
           </div>
-          <p className={`text-xs px-1 ${darkMode ? 'text-[#a0a0a0]' : 'text-[#767676]'} font-light`}>
+          <p className={`text-xs px-1 ${darkMode ? 'text-[#748D92]' : 'text-[#748D92]'} font-light`}>
             Press Enter to create or Escape to cancel
           </p>
         </div>
       )}
       
-      <div className={`space-y-1 ${collapsed ? 'flex flex-col items-center' : ''}`}>
+      <div className={`space-y-2 ${collapsed ? 'flex flex-col items-center' : ''}`}>
         {rooms.map((room) => (
           <button
             key={room.id}
@@ -129,16 +131,16 @@ export default function RoomSelector({
             className={`${collapsed ? 'w-12 h-12 flex justify-center rounded-2xl' : 'w-full text-left rounded-2xl'} px-3 py-2.5 text-sm focus:outline-none transition-all duration-200 flex items-center font-light hover:scale-[1.02] ${
               currentRoomId === room.id 
                 ? `${darkMode 
-                    ? 'bg-white text-[#111111]' 
-                    : 'bg-black text-white'
+                    ? 'bg-[#124E66] text-[#D3D9D4]' 
+                    : 'bg-[#124E66] text-[#D3D9D4]'
                   } shadow-sm`
                 : darkMode
-                  ? 'hover:bg-[#222222] text-[#a0a0a0]'
-                  : 'hover:bg-[#f5f5f5] text-[#767676]'
+                  ? 'hover:bg-[#2E3944] text-[#748D92]'
+                  : 'hover:bg-[#748D92]/20 text-[#748D92]'
             }`}
             title={collapsed ? room.name : undefined}
           >
-            <div className={currentRoomId === room.id ? (darkMode ? 'text-[#111111]' : 'text-white') : ''}>
+            <div className={currentRoomId === room.id ? 'text-[#D3D9D4]' : ''}>
               {getRoomIcon(room.icon)}
             </div>
             {!collapsed && (
@@ -148,10 +150,10 @@ export default function RoomSelector({
         ))}
         
         {rooms.length === 0 && !isAddingRoom && !collapsed && (
-          <div className={`text-sm p-4 text-center border ${
+          <div className={`text-sm p-4 text-center border rounded-2xl ${
             darkMode 
-              ? 'text-[#a0a0a0] border-[#333333] bg-[#111111]' 
-              : 'text-[#767676] border-[#e0e0e0] bg-white'
+              ? 'text-[#748D92] border-[#2E3944] bg-[#212A31]' 
+              : 'text-[#748D92] border-[#748D92]/30 bg-[#D3D9D4]'
           }`}>
             <p className="font-light">No rooms available.</p>
             <p className="font-light">Create one to start chatting.</p>

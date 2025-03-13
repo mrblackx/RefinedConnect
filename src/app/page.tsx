@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import RoomSelector from '@/components/RoomSelector';
 import UserProfile from '@/components/UserProfile';
 import ChatRoom from '@/components/ChatRoom';
@@ -28,6 +28,14 @@ const DUMMY_USERS = [
   { id: 'user4', name: 'Emma Wilson' },
   { id: 'user5', name: 'David Kim' },
 ];
+
+// Define user status types and colors
+const USER_STATUSES = {
+  ONLINE: { label: 'Online', color: 'bg-green-500' },
+  OFFLINE: { label: 'Offline', color: 'bg-red-500' },
+  IDLE: { label: 'Idle', color: 'bg-yellow-500' },
+  INVISIBLE: { label: 'Invisible', color: 'bg-gray-500' },
+};
 
 // Generate dummy messages for rooms
 const generateDummyMessages = () => {
@@ -303,22 +311,22 @@ const generateDummyMessages = () => {
 // Color palette variables
 const ETQColors = {
   // Main colors
-  background: 'bg-[#FFFFFF]',
-  backgroundDark: 'bg-[#1A1A1A]',
-  foreground: 'text-[#1A1A1A]',
-  foregroundDark: 'text-[#F5F5F5]',
-  foregroundMuted: 'text-[#666666]',
-  foregroundMutedDark: 'text-[#999999]',
+  background: 'bg-[#D3D9D4]',
+  backgroundDark: 'bg-[#212A31]',
+  foreground: 'text-[#212A31]',
+  foregroundDark: 'text-[#D3D9D4]',
+  foregroundMuted: 'text-[#748D92]',
+  foregroundMutedDark: 'text-[#748D92]',
   
   // UI elements
-  border: 'border-[#E5E5E5]',
-  borderDark: 'border-[#2A2A2A]',
-  accent: 'bg-[#1A1A1A] text-[#F5F5F5]',
-  accentDark: 'bg-[#F5F5F5] text-[#1A1A1A]',
+  border: 'border-[#748D92]',
+  borderDark: 'border-[#2E3944]',
+  accent: 'bg-[#124E66] text-[#D3D9D4]',
+  accentDark: 'bg-[#124E66] text-[#D3D9D4]',
   
   // Hover states
-  hoverLight: 'hover:bg-[#F5F5F5]',
-  hoverDark: 'hover:bg-[#2A2A2A]',
+  hoverLight: 'hover:bg-[#748D92]/20',
+  hoverDark: 'hover:bg-[#2E3944]',
 };
 
 export default function Home() {
@@ -346,6 +354,15 @@ export default function Home() {
   
   // State for profile menu
   const [profileMenuOpen, setProfileMenuOpen] = useState<boolean>(false);
+  
+  // State for user status
+  const [userStatus, setUserStatus] = useState(USER_STATUSES.ONLINE);
+  
+  // State for status dropdown
+  const [statusDropupOpen, setStatusDropupOpen] = useState(false);
+  
+  // Ref for status dropdown container
+  const statusDropupRef = useRef<HTMLDivElement>(null);
   
   // Flag for client-side rendering to prevent hydration errors
   useEffect(() => {
@@ -442,6 +459,20 @@ export default function Home() {
     initSocketServer();
   }, [isClient]);
   
+  // Close status dropup when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (statusDropupRef.current && !statusDropupRef.current.contains(event.target as Node)) {
+        setStatusDropupOpen(false);
+      }
+    }
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  
   // Handle room selection
   const handleSelectRoom = (roomId: string) => {
     const room = rooms.find(r => r.id === roomId);
@@ -516,10 +547,10 @@ export default function Home() {
   // If rendering on server or during first client render, show a simple loading state
   if (!isClient) {
     return (
-      <main className="flex h-screen items-center justify-center bg-[#FFFFFF] dark:bg-[#1A1A1A]">
+      <main className="flex h-screen items-center justify-center bg-[#D3D9D4] dark:bg-[#212A31]">
         <div className="text-center">
-          <div className="w-20 h-20 mx-auto mb-6 border-4 border-[#E5E5E5] border-t-[#1A1A1A] rounded-none animate-spin"></div>
-          <p className="text-xl text-[#1A1A1A] dark:text-[#F5F5F5] font-serif">Loading RefinedConnect...</p>
+          <div className="w-20 h-20 mx-auto mb-6 border-4 border-[#748D92]/30 border-t-[#124E66] rounded-none animate-spin"></div>
+          <p className="text-xl text-[#212A31] dark:text-[#D3D9D4] font-serif">Loading RefinedConnect...</p>
         </div>
       </main>
     );
@@ -529,112 +560,28 @@ export default function Home() {
     <main 
       className={`flex h-screen font-light ${
         darkMode 
-          ? 'bg-[#1A1A1A] [background-image:linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:32px_32px]' 
-          : 'bg-white [background-image:linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] [background-size:32px_32px]'
+          ? 'bg-[#212A31] [background-image:linear-gradient(to_right,rgba(46,57,68,0.5)_1px,transparent_1px),linear-gradient(to_bottom,rgba(46,57,68,0.5)_1px,transparent_1px)] [background-size:32px_32px] texture-overlay-dark' 
+          : 'bg-[#D3D9D4] [background-image:linear-gradient(to_right,rgba(116,141,146,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(116,141,146,0.2)_1px,transparent_1px)] [background-size:32px_32px] texture-overlay-light'
       }`}
     >
-      {/* Dark mode toggle and profile menu - Fixed to top right */}
-      <div className="fixed top-2 right-4 z-50 flex items-center gap-2">
-        {/* Profile Menu */}
-        <div className="relative">
-          <button
-            onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-            className={`p-2.5 rounded-2xl transition-all duration-200 hover:scale-105 shadow-sm ${
-              darkMode 
-                ? 'bg-[#2A2A2A] text-[#999999] hover:bg-[#333333]' 
-                : 'bg-[#F5F5F5] text-[#666666] hover:bg-[#E5E5E5]'
-            }`}
-          >
-            <User className="w-5 h-5" />
-          </button>
-          
-          {/* Dropdown Menu */}
-          {profileMenuOpen && (
-            <div className={`absolute right-0 mt-2 w-48 rounded-2xl shadow-lg ${
-              darkMode 
-                ? 'bg-[#2A2A2A] border border-[#333333]' 
-                : 'bg-white border border-[#E5E5E5]'
-            }`}>
-              <div className="py-1">
-                <button
-                  className={`flex items-center w-full px-4 py-3 text-sm ${
-                    darkMode 
-                      ? 'text-[#F5F5F5] hover:bg-[#333333]' 
-                      : 'text-[#1A1A1A] hover:bg-[#F5F5F5]'
-                  } transition-colors duration-200`}
-                >
-                  <User className="w-4 h-4 mr-3" />
-                  My Profile
-                </button>
-                <button
-                  className={`flex items-center w-full px-4 py-3 text-sm ${
-                    darkMode 
-                      ? 'text-[#F5F5F5] hover:bg-[#333333]' 
-                      : 'text-[#1A1A1A] hover:bg-[#F5F5F5]'
-                  } transition-colors duration-200`}
-                >
-                  <Settings className="w-4 h-4 mr-3" />
-                  Settings
-                </button>
-                <button
-                  className={`flex items-center w-full px-4 py-3 text-sm ${
-                    darkMode 
-                      ? 'text-[#F5F5F5] hover:bg-[#333333]' 
-                      : 'text-[#1A1A1A] hover:bg-[#F5F5F5]'
-                  } transition-colors duration-200`}
-                >
-                  <LogOut className="w-4 h-4 mr-3" />
-                  Log Out
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Dark mode toggle */}
-        <div className={`relative inline-flex h-10 w-20 items-center rounded-2xl transition-colors duration-300 focus:outline-none shadow-sm ${darkMode ? 'bg-[#2A2A2A]' : 'bg-[#F5F5F5]'}`}>
-          <span className="sr-only">Toggle dark mode</span>
-          <span className={`absolute left-1 flex h-8 w-8 items-center justify-center rounded-xl ${
-            darkMode 
-              ? 'translate-x-10 bg-[#1A1A1A] text-[#F5F5F5] shadow-sm' 
-              : 'translate-x-0 bg-white text-[#1A1A1A] shadow-sm'
-            } transform transition-all duration-300 hover:scale-105`}>
-            {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </span>
-          <span className={`absolute right-1 flex h-8 w-8 items-center justify-center rounded-xl ${
-            !darkMode 
-              ? 'translate-x-0 bg-[#F5F5F5] text-[#666666]' 
-              : '-translate-x-10 bg-[#2A2A2A] text-[#999999]'
-            } transform transition-all duration-300 hover:scale-105`}>
-            {darkMode ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-          </span>
-          <input
-            type="checkbox"
-            className="absolute h-full w-full cursor-pointer opacity-0"
-            checked={darkMode}
-            onChange={toggleTheme}
-          />
-        </div>
-      </div>
-
       {/* Sidebar */}
-      <div className={`${sidebarCollapsed ? 'w-24' : 'w-80'} border-r ${
+      <div className={`${sidebarCollapsed ? 'w-24' : 'w-80'} ${
         darkMode 
-          ? 'border-[#2A2A2A] bg-[#1A1A1A]' 
-          : 'border-[#E5E5E5] bg-white'
+          ? 'border-r border-[#2E3944] bg-[#212A31]' 
+          : 'border-r border-[#748D92]/20 bg-[#D3D9D4]'
         } flex flex-col transition-all duration-300`}>
         {/* App title and sidebar toggle */}
-        <div className={`p-4 border-b ${
+        <div className={`p-[17px] border-b ${
           darkMode 
-            ? 'border-[#2A2A2A] bg-[#1A1A1A]' 
-            : 'border-[#E5E5E5] bg-white'
+            ? 'border-[#2E3944] bg-[#191F24]' 
+            : 'border-[#748D92]/20 bg-[#DDE2D8]'
           } flex justify-between items-center`}>
           <div className={`flex items-center ${sidebarCollapsed ? 'w-full justify-center' : ''}`}>
             {sidebarCollapsed ? (
               <div className={`flex items-center justify-center w-12 h-12 rounded-2xl transition-transform hover:scale-105 ${
                 darkMode 
-                  ? 'bg-[#F5F5F5] text-[#1A1A1A]' 
-                  : 'bg-[#1A1A1A] text-[#F5F5F5]'
+                  ? 'bg-[#124E66] text-[#D3D9D4]' 
+                  : 'bg-[#124E66] text-[#D3D9D4]'
                 } shadow-sm`}>
                 <MessageCircle className="w-6 h-6" />
               </div>
@@ -642,12 +589,12 @@ export default function Home() {
               <div className="flex items-center">
                 <div className={`flex items-center justify-center w-12 h-12 mr-4 rounded-2xl transition-transform hover:scale-105 ${
                   darkMode 
-                    ? 'bg-[#F5F5F5] text-[#1A1A1A]' 
-                    : 'bg-[#1A1A1A] text-[#F5F5F5]'
+                    ? 'bg-[#124E66] text-[#D3D9D4]' 
+                    : 'bg-[#124E66] text-[#D3D9D4]'
                   } shadow-sm`}>
                   <MessageCircle className="w-6 h-6" />
                 </div>
-                <h1 className={`text-xl font-serif tracking-tight ${darkMode ? 'text-[#F5F5F5]' : 'text-[#1A1A1A]'}`}>
+                <h1 className={`text-xl font-serif tracking-tight ${darkMode ? 'text-[#D3D9D4]' : 'text-[#212A31]'}`}>
                   RefinedConnect
                 </h1>
               </div>
@@ -658,8 +605,8 @@ export default function Home() {
               onClick={toggleSidebar}
               className={`p-3 rounded-2xl ${
                 darkMode 
-                  ? 'bg-[#2A2A2A] text-[#999999] hover:bg-[#333333]' 
-                  : 'bg-[#F5F5F5] text-[#666666] hover:bg-[#E5E5E5]'
+                  ? 'bg-[#2E3944] text-[#748D92] hover:bg-[#124E66]' 
+                  : 'bg-[#748D92]/20 text-[#212A31] hover:bg-[#748D92]/30'
                 } focus:outline-none transition-all duration-200 hover:scale-105 shadow-sm`}
               aria-label="Collapse sidebar"
             >
@@ -670,17 +617,19 @@ export default function Home() {
         
         {/* Hamburger button in collapsed state */}
         {sidebarCollapsed && (
-          <button
-            onClick={toggleSidebar}
-            className={`p-3 mx-auto mt-1 rounded-2xl ${
-              darkMode 
-                ? 'bg-[#2A2A2A] text-[#999999] hover:bg-[#333333]' 
-                : 'bg-[#F5F5F5] text-[#666666] hover:bg-[#E5E5E5]'
-              } focus:outline-none transition-all duration-200 hover:scale-105 shadow-sm`}
-            aria-label="Expand sidebar"
-          >
-            <Menu className="w-6 h-6" />
-          </button>
+          <div className="flex items-center justify-center h-16">
+            <button
+              onClick={toggleSidebar}
+              className={`p-3 rounded-2xl ${
+                darkMode 
+                  ? 'bg-[#2E3944] text-[#748D92] hover:bg-[#124E66]' 
+                  : 'bg-[#748D92]/20 text-[#212A31] hover:bg-[#748D92]/30'
+                } focus:outline-none transition-all duration-200 hover:scale-105 shadow-sm`}
+              aria-label="Expand sidebar"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
         )}
 
         {/* User profile section */}
@@ -703,21 +652,46 @@ export default function Home() {
         />
         
         {/* Connection status */}
-        <div className={`mt-auto p-3 border-t ${
+        <div className={`mt-auto p-[32px] border-t ${
           darkMode 
-            ? 'border-[#333333] bg-[#111111]' 
-            : 'border-[#e0e0e0] bg-white'
+            ? 'border-[#2E3944] bg-[#191F24]' 
+            : 'border-[#748D92]/20 bg-[#DDE2D8]'
           }`}>
-          <div className="flex items-center justify-center text-sm">
+          <div className="flex items-center justify-center text-sm relative" ref={statusDropupRef}>
             <div 
-              className={`w-2 h-2 rounded-full mr-2 ${
-                isConnected ? 'bg-green-500' : 'bg-red-500'
-              }`} 
+              className={`w-2 h-2 rounded-full mr-2 ${userStatus.color}`} 
             />
             {!sidebarCollapsed && (
-              <span className={darkMode ? 'text-[#a0a0a0]' : 'text-[#767676]'}>
-                {isConnected ? 'Connected' : 'Disconnected'}
-              </span>
+              <div 
+                className={`flex items-center cursor-pointer ${darkMode ? 'text-[#748D92]' : 'text-[#748D92]'}`}
+                onMouseEnter={() => setStatusDropupOpen(true)}
+                onClick={() => setStatusDropupOpen(!statusDropupOpen)}
+              >
+                {userStatus.label}
+              </div>
+            )}
+            
+            {/* Status dropdown menu */}
+            {statusDropupOpen && !sidebarCollapsed && (
+              <div 
+                className={`absolute bottom-full left-0 mb-2 w-36 rounded-xl shadow-lg z-50 py-1 
+                  ${darkMode ? 'bg-[#191F24] border border-[#124E66]' : 'bg-[#DDE2D8] border border-[#124E66]'}`}
+              >
+                {Object.values(USER_STATUSES).map((status) => (
+                  <button
+                    key={status.label}
+                    className={`flex items-center w-full px-4 py-2 text-sm hover:bg-[#124E66] transition-colors duration-200
+                      ${darkMode ? 'text-[#D3D9D4]' : 'text-[#212A31]'}`}
+                    onClick={() => {
+                      setUserStatus(status);
+                      setStatusDropupOpen(false);
+                    }}
+                  >
+                    <div className={`w-2 h-2 rounded-full mr-2 ${status.color}`} />
+                    {status.label}
+                  </button>
+                ))}
+              </div>
             )}
           </div>
         </div>
@@ -731,9 +705,11 @@ export default function Home() {
           usernames={usernames}
           currentUserId={userId}
           currentRoom={currentRoomName}
+          roomIcon={currentRoom ? rooms.find(r => r.id === currentRoom)?.icon : 'MessageSquare'}
           onSendMessage={handleSendMessage}
           onTyping={handleTyping}
           darkMode={darkMode}
+          toggleTheme={toggleTheme}
         />
       </div>
     </main>

@@ -34,8 +34,14 @@ export function getInitials(name: string): string {
 
 /**
  * Generate a random color based on a string (for avatar backgrounds)
+ * Now modified to always return #191F24 for consistent user avatar styling
  */
 export function stringToColor(str: string): string {
+  // Always return #191F24 as requested
+  return '#191F24';
+  
+  // Original implementation commented out
+  /*
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
@@ -43,4 +49,5 @@ export function stringToColor(str: string): string {
   
   const hue = hash % 360;
   return `hsl(${hue}, 70%, 80%)`; // Using HSL for better readability
+  */
 } 

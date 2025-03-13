@@ -16,53 +16,54 @@ export default function ChatMessage({ message, isCurrentUser, darkMode = true }:
   const { username = 'Unknown', message: text = '', timestamp = new Date().toISOString() } = message;
   const formattedTime = formatDate(timestamp);
   const initials = getInitials(username);
-  const avatarColor = darkMode ? '#FFF' : '#000';
-  const avatarBgColor = darkMode ? '#222' : '#f5f5f5';
+  const avatarColor = stringToColor(username);
+  const avatarBgColor = '#191F24'; // Always use #191F24 for both light and dark modes
 
   return (
     <div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} mb-5 group`}>
       {!isCurrentUser && (
         <div 
-          className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full mr-3 text-xs font-light border transition-transform hover:scale-105"
+          className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full mr-3 text-xs font-light border transition-transform hover:scale-105 shadow-sm"
           style={{ 
-            color: avatarColor, 
+            color: '#D3D9D4', // Light text color for contrast with dark background
             backgroundColor: avatarBgColor,
-            borderColor: darkMode ? '#333' : '#e0e0e0' 
+            borderColor: darkMode ? '#2E3944' : '#748D92' 
           }}
         >
           {initials}
         </div>
       )}
-      <div className={`max-w-[70%] ${isCurrentUser ? 'items-end' : 'items-start'} flex flex-col`}>
+      
+      <div className={`flex flex-col ${isCurrentUser ? 'items-end' : 'items-start'} max-w-[70%] relative z-10`}>
         {!isCurrentUser && (
-          <p className={`text-xs mb-1 font-light ${darkMode ? 'text-[#a0a0a0]' : 'text-[#767676]'}`}>{username}</p>
+          <p className={`text-xs mb-1 font-light ${darkMode ? 'text-[#9EB8BE]' : 'text-[#546E73]'}`}>{username}</p>
         )}
         <div 
-          className={`py-3 px-4 rounded-2xl shadow-sm ${
+          className={`py-3 px-4 rounded-2xl shadow-sm inline-block ${
             isCurrentUser 
-              ? `${darkMode ? 'bg-white text-[#111111]' : 'bg-black text-white'}` 
+              ? `${darkMode ? 'bg-[#124E66] text-[#D3D9D4]' : 'bg-[#124E66] text-[#D3D9D4]'}` 
               : darkMode
-                ? 'bg-[#222222] text-white border border-[#333333]'
-                : 'bg-[#f5f5f5] text-black border border-[#e0e0e0]'
+                ? 'bg-[#2E3944] text-[#D3D9D4] border border-[#2E3944]'
+                : 'bg-[#EBF0EA] text-[#212A31] border border-[#748D92]/30 shadow-md'
           }`}
         >
           <p className="text-sm whitespace-pre-wrap break-words font-light">{text}</p>
         </div>
         <p className={`text-xs mt-1 px-1 transition-opacity duration-200 opacity-70 group-hover:opacity-100 ${
           darkMode
-            ? 'text-[#a0a0a0]'
-            : 'text-[#767676]'
+            ? 'text-[#9EB8BE]'
+            : 'text-[#546E73]'
         }`}>
           {formattedTime}
         </p>
       </div>
       {isCurrentUser && (
         <div 
-          className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full ml-3 text-xs font-light border"
+          className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full ml-3 text-xs font-light border transition-transform hover:scale-105 shadow-sm"
           style={{ 
-            color: avatarColor, 
+            color: '#D3D9D4', // Light text color for contrast with dark background
             backgroundColor: avatarBgColor,
-            borderColor: darkMode ? '#333' : '#e0e0e0' 
+            borderColor: darkMode ? '#2E3944' : '#748D92' 
           }}
         >
           {initials}

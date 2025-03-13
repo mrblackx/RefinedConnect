@@ -72,7 +72,7 @@ export default function ChatInput({ onSendMessage, onTyping, disabled = false, d
   };
 
   return (
-    <form onSubmit={handleSubmit} className={`flex items-end p-4 ${darkMode ? 'bg-[#111111]' : 'bg-white'} ${darkMode ? 'border-[#333333]' : 'border-[#e0e0e0]'} border-t`}>
+    <form onSubmit={handleSubmit} className={`flex items-center px-4 py-4 ${darkMode ? 'bg-[#191F24] border-t border-[#2E3944]' : 'bg-[#DDE2D8] border-t border-[#748D92]/20'} `}>
       <div className="flex-1 relative">
         <textarea
           ref={textareaRef}
@@ -83,16 +83,16 @@ export default function ChatInput({ onSendMessage, onTyping, disabled = false, d
           disabled={disabled}
           className={`w-full resize-none border rounded-2xl py-3 px-4 pr-14 focus:outline-none min-h-[48px] max-h-[150px] font-light text-sm ${
             darkMode 
-              ? 'border-[#333333] bg-[#222222] text-white placeholder-[#767676]' 
-              : 'border-[#e0e0e0] bg-white text-black placeholder-[#a0a0a0]'
+              ? 'border-[#2E3944] bg-[#212A31] text-[#D3D9D4] placeholder-[#748D92]' 
+              : 'border-[#748D92]/20 bg-[#F0F2EF] text-[#212A31] placeholder-[#748D92]'
           } transition-all duration-200 shadow-sm`}
           rows={1}
         />
-        <div className="absolute right-3 top-[45%] transform -translate-y-1/2 flex items-center justify-center">
+        <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center justify-center">
           <button
             type="submit"
             disabled={!message.trim() || disabled}
-            className={`${darkMode ? 'bg-white text-[#111111]' : 'bg-black text-white'} p-2 rounded-full focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 ease-in-out hover:scale-105 shadow-sm`}
+            className={`bg-[#124E66] text-[#D3D9D4] p-2 rounded-full focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 ease-in-out hover:scale-105 shadow-sm`}
           >
             <SendIcon className="w-5 h-5" />
           </button>
