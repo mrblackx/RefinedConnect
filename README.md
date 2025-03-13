@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # RefinedConnect - Modern Chat Application
 
 ## Project Overview 🚀
@@ -147,3 +148,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact 📧
 Project Link: [https://github.com/mrblackx/RefinedConnect](https://github.com/mrblackx/RefinedConnect)
+=======
+
+>>>>>>> 638675cd1887f1c5e33b0b79a7a195c73fa1aef8
